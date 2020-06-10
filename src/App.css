@@ -36,3 +36,15 @@
     transform: rotate(360deg);
   }
 }
+
+.Character {
+  white-space: pre;
+}
+
+.Character-current {
+  background-color: #09d3ac;
+}
+
+.Character-out {
+  color: silver;
+}
