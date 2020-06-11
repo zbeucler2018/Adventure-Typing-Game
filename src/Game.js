@@ -6,7 +6,7 @@ import { currentTime } from "./Misc/hooks/time";
 
 const initalWords = generatePhrase();
 
-function Game() {
+function Game(props) {
     // set state as empty arr with 20 spaces
     const [leftPadding, setLeftPadding] = useState(
       new Array(20).fill(" ").join("")
@@ -16,6 +16,7 @@ function Game() {
     const [outgoingChars, setOutgoingChars] = useState("");
     const [currentChar, setCurrentChar] = useState(initalWords.charAt(0));
     const [incomingChars, setIncomingChars] = useState(initalWords.substr(1));
+    
   
     /////// wpm ///////
     const [startTime, setStartTime] = useState();
@@ -74,6 +75,8 @@ function Game() {
           </p>
   
           <h3>WPM: {wpm}</h3>
+
+    <h2>Opponent: {props.opponent}</h2>
         </div>
       </div>
     );

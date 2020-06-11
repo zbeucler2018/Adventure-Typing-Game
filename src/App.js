@@ -7,10 +7,13 @@ import Login from './Login';
 function App() {
   
 const [isAuthenticated, setAuthenticated] = useState(false);
+const [opponent, setOpponent] = useState("");
 
 function onLogin(){
   setAuthenticated(!isAuthenticated);
-  console.log(isAuthenticated);
+}
+function getOpponent(value){
+  setOpponent(value);
 }
 
   return (
@@ -18,9 +21,9 @@ function onLogin(){
       {
         isAuthenticated ?
 
-          <Game/>
+          <Game opponent={opponent}/>
           :
-          <Login login={onLogin}/>
+          <Login login={onLogin} setOpponent={getOpponent}/>
       }
       
     </div>
