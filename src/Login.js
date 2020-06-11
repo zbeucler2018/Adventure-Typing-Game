@@ -24,6 +24,8 @@ class Login extends React.Component {
           if (this.state.name !== null && !this.state.loading) {
             this.props.login(true);
             this.props.setOpponent(data.opponent);
+            this.props.getStart(data.start);
+            
           }
         });
       }.bind(this)

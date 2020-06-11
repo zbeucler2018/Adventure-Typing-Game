@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import { generatePhrase } from "./Misc/hooks/phrases/phrase";
 import { useKeyPress } from "./Misc/hooks/keyPress";
@@ -16,7 +16,14 @@ function Game(props) {
     const [outgoingChars, setOutgoingChars] = useState("");
     const [currentChar, setCurrentChar] = useState(initalWords.charAt(0));
     const [incomingChars, setIncomingChars] = useState(initalWords.substr(1));
-    
+    const [seconds, setSeconds] = useState(props.start);
+    useEffect(() => {
+        if (seconds > 0) {
+          setTimeout(() => setSeconds(seconds - 1), 1000);
+        } else {
+          setSeconds('Start');
+        }
+      });
   
     /////// wpm ///////
     const [startTime, setStartTime] = useState();
@@ -62,6 +69,8 @@ function Game(props) {
         }
       }
     });
+
+    
   
     return (
       <div className="App">
@@ -77,6 +86,8 @@ function Game(props) {
           <h3>WPM: {wpm}</h3>
 
     <h2>Opponent: {props.opponent}</h2>
+    
+    <h1>{seconds}</h1>
         </div>
       </div>
     );
