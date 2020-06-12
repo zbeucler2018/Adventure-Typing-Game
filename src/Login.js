@@ -10,9 +10,11 @@ class Login extends React.Component {
       name: null,
       loading: false,
       opponent: null,
+      isWinner: null,
+      socketID: null,
     };
 
-    this.socket = io.connect("http://localhost:5000/");
+    this.socket = io.connect("https://721461e8bf88.ngrok.io/");
   }
 
   componentWillMount() {
@@ -20,7 +22,7 @@ class Login extends React.Component {
       "foo",
       function (data) {
         console.log(data);
-        this.setState({ loading: data.loading }, function () {
+        this.setState({ loading: data.loading, socketID: data.id }, function () {
           if (this.state.name !== null && !this.state.loading) {
             this.props.login(true);
             this.props.setOpponent(data.opponent);
@@ -30,6 +32,13 @@ class Login extends React.Component {
         });
       }.bind(this)
     );
+
+    this.socket.on(
+        "winner",
+        function(data){
+            console.log(data);
+            this.setState({isWinner: data.isWinner})
+        }.bind(this));
   }
 
   handleChange = (events) => {
