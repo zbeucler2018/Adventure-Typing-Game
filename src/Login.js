@@ -12,7 +12,7 @@ class Login extends React.Component {
       opponent: null,
     };
 
-    this.socket = io.connect("http://localhost:5000/");
+    this.socket = io.connect("https://721461e8bf88.ngrok.io");
   }
 
   componentWillMount() {
@@ -25,7 +25,6 @@ class Login extends React.Component {
             this.props.login(true);
             this.props.setOpponent(data.opponent);
             this.props.getStart(data.start);
-            
           }
         });
       }.bind(this)
@@ -46,7 +45,7 @@ class Login extends React.Component {
       <div>
         <div style={{ textAlign: "center" }}>
           <div style={{ fontSize: "50px", marginTop: "300px" }}>
-            <label for="username">Create Username: </label>
+            <label htmlFor="username">Create Username: </label>
             <input
               style={{ fontSize: "50px", borderRadius: "15px", margin: "20px" }}
               id="username"
