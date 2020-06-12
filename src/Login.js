@@ -1,5 +1,5 @@
 import React from "react";
-import io from "socket.io-client";
+
 import Leaderboard from "./Leaderboard";
 
 class Login extends React.Component {
@@ -14,15 +14,10 @@ class Login extends React.Component {
       socketID: null,
     };
 
-<<<<<<< HEAD
-    this.socket = io.connect("https://721461e8bf88.ngrok.io/");
-=======
-    this.socket = io.connect("https://721461e8bf88.ngrok.io");
->>>>>>> f35078b1619c513dac03198a466e971e585c3817
   }
 
   componentWillMount() {
-    this.socket.on(
+    this.props.socket.on(
       "foo",
       function (data) {
         console.log(data);
@@ -36,7 +31,7 @@ class Login extends React.Component {
       }.bind(this)
     );
 
-    this.socket.on(
+    this.props.socket.on(
         "winner",
         function(data){
             console.log(data);
@@ -50,7 +45,8 @@ class Login extends React.Component {
 
   onJoin = () => {
     console.log(this.state.name);
-    this.socket.emit("join", { player: this.state.name });
+    this.props.socket.emit("join", { player: this.state.name });
+    this.props.assignName(this.state.name);
   };
 
   render() {

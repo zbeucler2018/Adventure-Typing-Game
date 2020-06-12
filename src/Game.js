@@ -4,6 +4,7 @@ import { generatePhrase } from "./Misc/hooks/phrases/phrase";
 import { useKeyPress } from "./Misc/hooks/keyPress";
 import { currentTime } from "./Misc/hooks/time";
 
+import axios from 'axios';
 let durationInMinutes;
 
 const initalWords = generatePhrase();
@@ -15,10 +16,12 @@ function Game(props) {
   );
 
   ///// UI /////
+  const [id, setId] = useState("");
   const [outgoingChars, setOutgoingChars] = useState("");
   const [currentChar, setCurrentChar] = useState(initalWords.charAt(0));
   const [incomingChars, setIncomingChars] = useState(initalWords.substr(1));
   const [seconds, setSeconds] = useState(props.start);
+  const [winner, setWinner] = useState("");
   useEffect(() => {
     if (seconds > 0) {
       setTimeout(() => setSeconds(seconds - 1), 1000);
@@ -71,16 +74,48 @@ function Game(props) {
 
         //
         setWpm(((wordCount + 1) / durationInMinutes).toFixed(2));
+        
+        props.socket.emit('updateWPM', {username: props.username, wpm: wpm});
+        console.log(durationInMinutes);
       }
     }
   });
 
-  if (durationInMinutes > 2) {
+  function endGame(){
+      props.socket.emit('endgame', {player: props.username});
+  }
+
+  function gameFinish(){
+    axios.post('https://721461e8bf88.ngrok.io/finish/',{
+        
+        player1: props.username,
+        player2: props.opponent
+    }).then(res => {
+        console.log(res);
+        
+        if(parseFloat(res.data[0]['wpm']) > parseFloat(res.data[1]['wpm'])){
+            setWinner(res.data[0]['username']);
+        }
+        else{
+            setWinner(res.data[1]['username']);
+        }
+    }).catch(err => {
+        console.log(err);
+    })
+
+    
+  }
+
+  if (durationInMinutes > .25) {
+      console.log(durationInMinutes);
+      gameFinish();
     // if players are playing for more than two minutes, turn game off
     return (
       <div className="App">
         <h3 style={{ textAlign: "center" }}>Game Over!</h3>
         <p>WPM: {wpm}</p>
+        <button onClick={endGame}>End Game</button>
+        <h1>Winner: {winner}</h1>
       </div>
     );
   } else {
